@@ -3,8 +3,37 @@
         let allRecipes = [];
         let filteredRecipes = [];
         let currentCategory = 'all';
-        const ADMIN_EMAIL = 'rehan94@gmail.com';
-        const ADMIN_PASSWORD = 'coderrehan';
+       // XOR based obfuscation function
+function xorEncodeDecode(str, key) {
+  let result = '';
+  for (let i = 0; i < str.length; i++) {
+    result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return result;
+}
+
+// Password aur mail ko obfuscate karke Base64 encode karna (isse code mein directly password nahi dikhega)
+const encodedAdminEmail = 'CwsBECQAQVoYXFA=';  // Base64 encoded XOR encrypted email
+const encodedAdminPassword = 'FRsSGBsWDRkU';    // Base64 encoded XOR encrypted password
+const key = 'key123';  // Random key jo XOR ke liye use hogi
+
+// Decode karne ke liye
+function decode(encodedStr) {
+  const decodedBase64 = atob(encodedStr);
+  return xorEncodeDecode(decodedBase64, key);
+}
+
+const ADMIN_EMAIL = decode(encodedAdminEmail);
+const ADMIN_PASSWORD = decode(encodedAdminPassword);
+
+// Example usage for login verification
+function checkLogin(email, password) {
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    return true; // valid admin
+  }
+  return false; // invalid login
+}
+
 
         const categories = [
             { name: 'all', emoji: '🍽️', label: 'All Recipes' },
